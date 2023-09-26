@@ -1,8 +1,6 @@
 package models
 
 import (
-	"GinChat/utils"
-	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -30,16 +28,5 @@ func (tabel *UserBasic) TableName() string {
 }
 
 // CRUD
-func GetUserList() []*UserBasic {
-	db, err := utils.InitMySQL()
-	db.AutoMigrate(&UserBasic{})
-	if err != nil {
-		return nil
-	}
-	data := make([]*UserBasic, 10)
-	db.Find(&data)
-	for _, v := range data {
-		fmt.Println(v)
-	}
-	return data
+func GetUserList() {
 }
