@@ -1,25 +1,25 @@
 package models
 
 import (
-	"time"
+	"GinChat/utils"
 
 	"gorm.io/gorm"
 )
 
 type UserBasic struct {
 	gorm.Model
-	Name          string ``
-	Password      string
-	Phone         string
-	Email         string
-	ClientIP      string
-	Identity      string
-	ClientPort    string
-	LoginTime     time.Time
-	LoginOutTime  time.Time
-	HeartbeatTime time.Time
-	IsLogout      bool
-	DeviceInfo    string
+	Name          string `json:"name" form:"name" binding:"required"`
+	Password      string `json:"password" form:"password" binding:"required"`
+	Phone         string `json:"phone" form:"phone" binding:"required"`
+	Email         string `json:"email" form:"email" binding:"required"`
+	ClientIP      string `json:"clientIP" form:"clientIP" binding:"required"`
+	Identity      string `json:"identity" form:"identity" binding:"required"`
+	ClientPort    string `json:"clientPort" form:"clientPort" binding:"required"`
+	LoginTime     string `json:"loginTime" form:"loginTime"`
+	LoginOutTime  string `json:"loginOutTime" form:"loginOutTime"`
+	HeartbeatTime string `json:"heartbeatTime" form:"heartbeatTime"`
+	IsLogout      bool   `json:"isLogout" form:"isLogout"`
+	DeviceInfo    string `json:"deviceInfo" form:"deviceInfo"`
 }
 
 // 表名
@@ -28,5 +28,12 @@ func (tabel *UserBasic) TableName() string {
 }
 
 // CRUD
-func GetUserList() {
+func (*UserBasic) CreateUser(u *UserBasic) error {
+	return utils.DB.Create(&u).Error
+}
+
+func (*UserBasic) GetUserList(limit, page int) []*UserBasic {
+	userList := make([]*UserBasic, limit)
+	utils.DB.Limit(limit).Offset((page - 1) * limit).Find(&userList)
+	return userList
 }

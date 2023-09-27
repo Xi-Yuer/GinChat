@@ -23,3 +23,5 @@ func GetIndex(ctx *gin.Context) {
 		"message": "welcome",
 	})
 }
+
+
