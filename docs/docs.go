@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/index": {
+        "/": {
             "get": {
                 "description": "do ping",
                 "consumes": [
@@ -43,12 +43,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
+	Version:          "1.0 版本",
 	Host:             "",
-	BasePath:         "",
+	BasePath:         "/  基础路径",
 	Schemes:          []string{},
-	Title:            "Swagger Example API",
-	Description:      "This is a sample server Petstore server.",
+	Title:            "标题",
+	Description:      "描述",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

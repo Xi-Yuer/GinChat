@@ -1,13 +1,14 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample server Petstore server.",
-        "title": "Swagger Example API",
+        "description": "描述",
+        "title": "标题",
         "contact": {},
-        "version": "1.0"
+        "version": "1.0 版本"
     },
+    "basePath": "/  基础路径",
     "paths": {
-        "/index": {
+        "/": {
             "get": {
                 "description": "do ping",
                 "consumes": [

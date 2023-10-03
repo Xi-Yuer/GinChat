@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GinChat/common"
 	"GinChat/router"
 	"GinChat/utils"
 )
@@ -13,6 +14,7 @@ func main() {
 	// 初始化
 	utils.InitConfig()
 	utils.InitMySQL()
+	common.CreateTables()
 	// 路由请求
 	router := router.Router()
 	// 启动

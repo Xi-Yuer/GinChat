@@ -2,12 +2,12 @@ package service
 
 import (
 	models "GinChat/models/user"
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
-
-var user = models.UserBasic{}
 
 type UserQueryParams struct {
 	Limit int `form:"limit" binding:"required"`
@@ -26,7 +26,7 @@ func GetUserList(ctx *gin.Context) {
 			})
 		return
 	}
-	data := user.GetUserList(params.Limit, params.Page)
+	data := models.GetUserList(params.Limit, params.Page)
 	ctx.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"data": data,
@@ -34,8 +34,8 @@ func GetUserList(ctx *gin.Context) {
 }
 
 func CreateUser(ctx *gin.Context) {
-	user := models.UserBasic{}
-	err := ctx.ShouldBind(&user)
+	user := &models.UserBasic{}
+	err := ctx.ShouldBind(user)
 	if err != nil {
 		ctx.JSON(
 			http.StatusBadRequest,
@@ -45,9 +45,43 @@ func CreateUser(ctx *gin.Context) {
 			})
 		return
 	}
-	data := user.CreateUser(&user)
+	error := models.CreateUser(user)
+	if error != nil {
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{
+				"code": http.StatusBadRequest,
+				"msg":  error.Error(),
+			})
+		return
+	}
 	ctx.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
-		"data": data,
+		"msg":  "创建成功",
+	})
+}
+
+func DeleteUser(ctx *gin.Context) {
+	idStr := ctx.Param("id")
+	id, _ := strconv.Atoi(idStr)
+	models.DeleteUser(id)
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg": "删除成功",
+	})
+}
+
+func UpdateUser(ctx *gin.Context) {
+	id := ctx.Param("id")
+	user := &models.UserBasic{}
+	err := ctx.ShouldBind(user)
+	if err != nil {
+		ctx.JSON(http.StatusBadGateway, gin.H{
+			"msg": err.Error(),
+		})
+	}
+	fmt.Println(id)
+	models.UpdateUser(id, user)
+	ctx.JSON(http.StatusOK, gin.H{
+		"msg": "更新成功",
 	})
 }

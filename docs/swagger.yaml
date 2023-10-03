@@ -1,10 +1,11 @@
+basePath: /  基础路径
 info:
   contact: {}
-  description: This is a sample server Petstore server.
-  title: Swagger Example API
-  version: "1.0"
+  description: 描述
+  title: 标题
+  version: 1.0 版本
 paths:
-  /index:
+  /:
     get:
       consumes:
       - application/json
