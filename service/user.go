@@ -2,6 +2,7 @@ package service
 
 import (
 	models "GinChat/models/user"
+	"GinChat/utils"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -34,6 +35,7 @@ func GetUserList(ctx *gin.Context) {
 }
 
 func CreateUser(ctx *gin.Context) {
+	// 参数校验
 	user := &models.UserBasic{}
 	err := ctx.ShouldBind(user)
 	if err != nil {
@@ -45,6 +47,15 @@ func CreateUser(ctx *gin.Context) {
 			})
 		return
 	}
+	// 注册逻辑校验
+	hasExistName := models.FindUserByName(user.Name)
+	if hasExistName.ID != 0 {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"msg": "用户已注册",
+		})
+		return
+	}
+	// 创建用户
 	error := models.CreateUser(user)
 	if error != nil {
 		ctx.JSON(
@@ -84,4 +95,17 @@ func UpdateUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"msg": "更新成功",
 	})
+}
+
+func UserLogin(ctx *gin.Context) {
+	phone := ctx.PostForm("phone")
+	password := ctx.PostForm("password")
+
+	ok := models.UserLogin(phone, password)
+	if !ok {
+		utils.Error(ctx, "手机号或密码错误")
+		return
+	}
+
+	utils.Success(ctx, "登陆成功")
 }

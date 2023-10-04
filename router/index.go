@@ -17,6 +17,7 @@ func Router() *gin.Engine {
 		userRoutes.POST("", service.CreateUser)
 		userRoutes.DELETE(":id", service.DeleteUser)
 		userRoutes.PATCH(":id", service.UpdateUser)
+		userRoutes.POST("/login", service.UserLogin)
 	}
 	// 工具类
 	{
